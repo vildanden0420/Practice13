@@ -43,18 +43,20 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                imageView.setVisibility(View.GONE);
-                flipper.setVisibility(View.VISIBLE);
-                flipper.setFlipInterval(interval);
-                flipper.startFlipping();
-                task = new CustomTask();
-                task.execute(interval);
-                tv.setText("시작부터 "+1+"초");
                 if(et.getText().toString().equals("")){
                     interval= 1000;
                 }else{
                     interval = Integer.parseInt(et.getText().toString())*1000;
                 }
+
+                imageView.setVisibility(View.GONE);
+                flipper.setVisibility(View.VISIBLE);
+                flipper.setFlipInterval(interval);
+                flipper.startFlipping();
+                tv.setText("시작부터 "+1+"초");
+
+                task = new CustomTask();
+                task.execute(interval);
 
 
             }
@@ -87,6 +89,7 @@ public class Main2Activity extends AppCompatActivity {
         flipper.setVisibility(View.GONE);
         flipper.stopFlipping();
         flipper.setDisplayedChild(0);
+        task.cancel(true);
         tv.setText("");
     }
 
@@ -120,7 +123,7 @@ public class Main2Activity extends AppCompatActivity {
             super.onProgressUpdate(values);
 
             tv.setText("시작부터 "+(values[0]+1)+"초");
-            count = values[0]%3;
+            count = (values[0]/(interval/1000))%3;
             seconds = values[0];
         }
 
